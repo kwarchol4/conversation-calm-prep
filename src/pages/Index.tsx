@@ -1,3 +1,4 @@
+
 import { 
   MessageSquare, 
   BookOpen, 
@@ -98,13 +99,6 @@ const Index = () => {
       gradient: "from-blue-500 to-blue-600"
     },
     {
-      title: "Średnia Ocena",
-      value: "4.2/5",
-      change: "+0.3 punkta",
-      icon: Star,
-      gradient: "from-yellow-500 to-yellow-600"
-    },
-    {
       title: "Zdobyte Odznaki",
       value: "7",
       change: "+2 nowe",
@@ -153,7 +147,7 @@ const Index = () => {
         {activeTab === 'dashboard' ? (
           <>
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {stats.map((stat, index) => (
                 <StatsCard
                   key={index}
