@@ -69,19 +69,24 @@ const ChatBot = () => {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Chat Interface */}
       <div className="lg:col-span-2">
-        <Card className="h-[500px] flex flex-col">
-          <CardHeader className="border-b">
-            <CardTitle className="flex items-center gap-2">
-              <Avatar className="h-8 w-8">
-                <AvatarImage src="https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=32&h=32&fit=crop&crop=face" />
-                <AvatarFallback>
-                  <Bot className="h-4 w-4 text-blue-600" />
+        <Card className="h-[600px] flex flex-col">
+          {/* Large Avatar Header */}
+          <div className="p-6 border-b bg-gradient-to-r from-blue-50 to-purple-50">
+            <div className="text-center">
+              <Avatar className="h-20 w-20 mx-auto mb-3">
+                <AvatarImage src="https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=80&h=80&fit=crop&crop=face" />
+                <AvatarFallback className="bg-blue-600 text-white text-2xl">
+                  <Bot className="h-10 w-10" />
                 </AvatarFallback>
               </Avatar>
-              Asystent ManagerCoach
-              <span className="text-sm font-normal text-green-600 ml-auto">● Online</span>
-            </CardTitle>
-          </CardHeader>
+              <h3 className="text-xl font-semibold text-gray-800">Asystent ManagerCoach</h3>
+              <p className="text-sm text-gray-600 mt-1">Twój osobisty coach rozwoju menedżerskiego</p>
+              <span className="inline-flex items-center text-sm text-green-600 mt-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                Online
+              </span>
+            </div>
+          </div>
           
           <CardContent className="flex-1 p-4 overflow-y-auto">
             <div className="space-y-4">
