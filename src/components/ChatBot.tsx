@@ -1,10 +1,10 @@
-
 import { useState } from "react";
 import { Send, Bot, User, Calendar, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import AnimatedAvatar from "./AnimatedAvatar";
 
 interface Message {
   id: string;
@@ -70,15 +70,10 @@ const ChatBot = () => {
       {/* Chat Interface */}
       <div className="lg:col-span-2">
         <Card className="h-[600px] flex flex-col">
-          {/* Large Avatar Header */}
+          {/* Large Animated Avatar Header */}
           <div className="p-6 border-b bg-gradient-to-r from-blue-50 to-purple-50">
             <div className="text-center">
-              <Avatar className="h-20 w-20 mx-auto mb-3">
-                <AvatarImage src="https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=80&h=80&fit=crop&crop=face" />
-                <AvatarFallback className="bg-blue-600 text-white text-2xl">
-                  <Bot className="h-10 w-10" />
-                </AvatarFallback>
-              </Avatar>
+              <AnimatedAvatar isSpeaking={isTyping} className="mb-4" />
               <h3 className="text-xl font-semibold text-gray-800">Asystent ManagerCoach</h3>
               <p className="text-sm text-gray-600 mt-1">Twój osobisty coach rozwoju menedżerskiego</p>
               <span className="inline-flex items-center text-sm text-green-600 mt-2">
