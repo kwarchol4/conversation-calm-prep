@@ -1,5 +1,3 @@
-
-
 import { 
   MessageSquare, 
   BookOpen, 
@@ -28,24 +26,6 @@ const Index = () => {
       description: "Przećwicz trudne rozmowy z pracownikami w bezpiecznym środowisku",
       icon: MessageSquare,
       gradient: "from-blue-500 to-blue-600"
-    },
-    {
-      title: "Przewodnik Komunikacji",
-      description: "Poznaj sprawdzone techniki prowadzenia skutecznych rozmów 1:1",
-      icon: BookOpen,
-      gradient: "from-purple-500 to-purple-600"
-    },
-    {
-      title: "Symulator Rozmów",
-      description: "Interaktywne ćwiczenia z natychmiastowym feedbackiem",
-      icon: Target,
-      gradient: "from-green-500 to-green-600"
-    },
-    {
-      title: "Postępy i Analityka",
-      description: "Śledź swój rozwój i identyfikuj obszary do poprawy",
-      icon: TrendingUp,
-      gradient: "from-orange-500 to-orange-600"
     }
   ];
 
@@ -119,8 +99,8 @@ const Index = () => {
               ))}
             </div>
 
-            {/* Main Features */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Main Feature - only Scenariusze Rozmów */}
+            <div className="grid grid-cols-1 gap-6">
               {dashboardItems.map((item, index) => (
                 <DashboardCard
                   key={index}
@@ -141,4 +121,3 @@ const Index = () => {
 };
 
 export default Index;
-
