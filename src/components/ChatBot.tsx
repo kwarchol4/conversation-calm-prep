@@ -4,6 +4,7 @@ import { Send, Bot, User, Calendar, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Message {
   id: string;
@@ -71,7 +72,12 @@ const ChatBot = () => {
         <Card className="h-[500px] flex flex-col">
           <CardHeader className="border-b">
             <CardTitle className="flex items-center gap-2">
-              <Bot className="h-5 w-5 text-blue-600" />
+              <Avatar className="h-8 w-8">
+                <AvatarImage src="https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=32&h=32&fit=crop&crop=face" />
+                <AvatarFallback>
+                  <Bot className="h-4 w-4 text-blue-600" />
+                </AvatarFallback>
+              </Avatar>
               Asystent ManagerCoach
               <span className="text-sm font-normal text-green-600 ml-auto">● Online</span>
             </CardTitle>
@@ -85,11 +91,23 @@ const ChatBot = () => {
                   className={`flex gap-3 ${message.isUser ? 'justify-end' : 'justify-start'}`}
                 >
                   <div className={`flex gap-3 max-w-[80%] ${message.isUser ? 'flex-row-reverse' : 'flex-row'}`}>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      message.isUser ? 'bg-blue-600' : 'bg-gray-600'
-                    }`}>
-                      {message.isUser ? <User className="h-4 w-4 text-white" /> : <Bot className="h-4 w-4 text-white" />}
-                    </div>
+                    <Avatar className="w-8 h-8">
+                      {message.isUser ? (
+                        <>
+                          <AvatarImage src="https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=32&h=32&fit=crop&crop=face" />
+                          <AvatarFallback className="bg-blue-600">
+                            <User className="h-4 w-4 text-white" />
+                          </AvatarFallback>
+                        </>
+                      ) : (
+                        <>
+                          <AvatarImage src="https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=32&h=32&fit=crop&crop=face" />
+                          <AvatarFallback className="bg-gray-600">
+                            <Bot className="h-4 w-4 text-white" />
+                          </AvatarFallback>
+                        </>
+                      )}
+                    </Avatar>
                     <div className={`rounded-lg p-3 ${
                       message.isUser 
                         ? 'bg-blue-600 text-white' 
@@ -106,9 +124,12 @@ const ChatBot = () => {
               
               {isTyping && (
                 <div className="flex gap-3 justify-start">
-                  <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">
-                    <Bot className="h-4 w-4 text-white" />
-                  </div>
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage src="https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=32&h=32&fit=crop&crop=face" />
+                    <AvatarFallback className="bg-gray-600">
+                      <Bot className="h-4 w-4 text-white" />
+                    </AvatarFallback>
+                  </Avatar>
                   <div className="bg-gray-100 rounded-lg p-3">
                     <div className="flex space-x-1">
                       <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
