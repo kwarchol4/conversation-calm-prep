@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Send, Bot, User, Calendar, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -186,35 +187,6 @@ const ChatBot = () => {
               </div>
               <div className="font-semibold">{weekendStats.lastWeekendSession}</div>
             </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Szybkie Pytania</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <Button 
-              variant="outline" 
-              className="w-full text-left justify-start h-auto p-3"
-              onClick={() => setInputValue("Jak wyglądały moje weekendowe sesje w tym miesiącu?")}
-            >
-              Podsumowanie miesiąca
-            </Button>
-            <Button 
-              variant="outline" 
-              className="w-full text-left justify-start h-auto p-3"
-              onClick={() => setInputValue("Które scenariusze ćwiczyłem najczęściej w weekendy?")}
-            >
-              Popularne scenariusze
-            </Button>
-            <Button 
-              variant="outline" 
-              className="w-full text-left justify-start h-auto p-3"
-              onClick={() => setInputValue("Porady na lepsze wykorzystanie weekendów")}
-            >
-              Porady rozwojowe
-            </Button>
           </CardContent>
         </Card>
       </div>
