@@ -1,10 +1,10 @@
-
-import { useState } from "react";
-import { Send, Bot, User, Calendar, Clock } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Send, Bot, User, Calendar, Clock, Key } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Label } from "@/components/ui/label";
 import AnimatedAvatar from "./AnimatedAvatar";
 
 interface Message {
@@ -25,12 +25,74 @@ const ChatBot = () => {
   ]);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [apiKey, setApiKey] = useState("");
+  const [tempApiKey, setTempApiKey] = useState("");
+  const [showApiKeyInput, setShowApiKeyInput] = useState(false);
 
   // Symulacja danych weekendowych (w rzeczywistej aplikacji byłyby z bazy danych)
   const weekendStats = {
     daysUsed: 3,
     totalHours: 2.5,
     lastWeekendSession: "Niedziela, 15:30"
+  };
+
+  useEffect(() => {
+    const savedApiKey = localStorage.getItem('gemini-api-key');
+    if (savedApiKey) {
+      setApiKey(savedApiKey);
+    } else {
+      setShowApiKeyInput(true);
+    }
+  }, []);
+
+  const saveApiKey = () => {
+    if (tempApiKey.trim()) {
+      localStorage.setItem('gemini-api-key', tempApiKey);
+      setApiKey(tempApiKey);
+      setShowApiKeyInput(false);
+      setTempApiKey("");
+    }
+  };
+
+  const callGeminiAPI = async (message: string) => {
+    if (!apiKey) {
+      throw new Error("Brak klucza API");
+    }
+
+    const systemPrompt = `Jesteś asystentem ManagerCoach - aplikacji do rozwoju umiejętności menedżerskich. 
+    Użytkownik ma następujące statystyki weekendowe:
+    - Dni korzystania w ostatnim weekendzie: ${weekendStats.daysUsed}
+    - Łączny czas ćwiczeń: ${weekendStats.totalHours}h
+    - Ostatnia sesja: ${weekendStats.lastWeekendSession}
+    
+    Odpowiadaj w języku polskim, bądź pomocny i konkretny. Skupiaj się na rozwoju umiejętności menedżerskich i analizie postępów użytkownika.`;
+
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: `${systemPrompt}\n\nPytanie użytkownika: ${message}`
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          topK: 40,
+          topP: 0.95,
+          maxOutputTokens: 1024,
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Błąd API Gemini');
+    }
+
+    const data = await response.json();
+    return data.candidates[0].content.parts[0].text;
   };
 
   const handleSendMessage = async () => {
@@ -47,17 +109,29 @@ const ChatBot = () => {
     setInputValue("");
     setIsTyping(true);
 
-    // Symulacja odpowiedzi chatbota (w rzeczywistej aplikacji byłaby integracja z Gemini)
-    setTimeout(() => {
+    try {
+      const geminiResponse = await callGeminiAPI(userMessage.text);
+      
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: "Dziękuję za pytanie! W weekend korzystałeś z aplikacji przez 3 dni, łącznie 2,5 godziny. To świetny wynik! Czy chciałbyś przeanalizować konkretne scenariusze, które ćwiczyłeś?",
+        text: geminiResponse,
         isUser: false,
         timestamp: new Date()
       };
+      
       setMessages(prev => [...prev, botResponse]);
+    } catch (error) {
+      console.error('Błąd Gemini API:', error);
+      const errorResponse: Message = {
+        id: (Date.now() + 1).toString(),
+        text: "Przepraszam, wystąpił błąd podczas łączenia z AI. Sprawdź swój klucz API lub spróbuj ponownie.",
+        isUser: false,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorResponse]);
+    } finally {
       setIsTyping(false);
-    }, 1000);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -65,6 +139,85 @@ const ChatBot = () => {
       handleSendMessage();
     }
   };
+
+  if (showApiKeyInput) {
+    return (
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <Card className="h-[600px] flex flex-col justify-center items-center">
+            <CardContent className="w-full max-w-md space-y-4">
+              <div className="text-center mb-6">
+                <Key className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-800">Konfiguracja API Gemini</h3>
+                <p className="text-sm text-gray-600 mt-2">
+                  Wprowadź swój klucz API Gemini, aby aktywować AI asystenta
+                </p>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="apikey">Klucz API Gemini</Label>
+                <Input
+                  id="apikey"
+                  type="password"
+                  value={tempApiKey}
+                  onChange={(e) => setTempApiKey(e.target.value)}
+                  placeholder="AIzaSy..."
+                  className="w-full"
+                />
+                <p className="text-xs text-gray-500">
+                  Klucz będzie zapisany lokalnie w przeglądarce
+                </p>
+              </div>
+              
+              <Button onClick={saveApiKey} disabled={!tempApiKey.trim()} className="w-full">
+                Zapisz i Aktywuj
+              </Button>
+              
+              <div className="text-center">
+                <p className="text-xs text-gray-500">
+                  Nie masz klucza API? Uzyskaj go za darmo na{" "}
+                  <a href="https://ai.google.dev/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                    ai.google.dev
+                  </a>
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        
+        {/* Weekend Stats Panel - keep existing */}
+        <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Calendar className="h-5 w-5 text-purple-600" />
+                Statystyki Weekendowe
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="text-center p-4 bg-purple-50 rounded-lg">
+                <div className="text-2xl font-bold text-purple-600">{weekendStats.daysUsed}</div>
+                <div className="text-sm text-gray-600">Dni w ostatnim weekendzie</div>
+              </div>
+              
+              <div className="text-center p-4 bg-blue-50 rounded-lg">
+                <div className="text-2xl font-bold text-blue-600">{weekendStats.totalHours}h</div>
+                <div className="text-sm text-gray-600">Łączny czas ćwiczeń</div>
+              </div>
+              
+              <div className="p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-2 text-sm text-gray-600 mb-1">
+                  <Clock className="h-4 w-4" />
+                  Ostatnia sesja
+                </div>
+                <div className="font-semibold">{weekendStats.lastWeekendSession}</div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -76,11 +229,22 @@ const ChatBot = () => {
             <div className="text-center">
               <AnimatedAvatar isSpeaking={isTyping} className="mb-4" />
               <h3 className="text-xl font-semibold text-gray-800">Asystent ManagerCoach</h3>
-              <p className="text-sm text-gray-600 mt-1">Twój osobisty coach rozwoju menedżerskiego</p>
-              <span className="inline-flex items-center text-sm text-green-600 mt-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                Online
-              </span>
+              <p className="text-sm text-gray-600 mt-1">Twój osobisty coach rozwoju menedżerskiego (Powered by Gemini AI)</p>
+              <div className="flex items-center justify-center gap-4 mt-2">
+                <span className="inline-flex items-center text-sm text-green-600">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                  Online
+                </span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowApiKeyInput(true)}
+                  className="text-xs"
+                >
+                  <Key className="h-3 w-3 mr-1" />
+                  Zmień API
+                </Button>
+              </div>
             </div>
           </div>
           
