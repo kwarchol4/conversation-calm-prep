@@ -44,6 +44,16 @@ const KnowledgeBaseManager = ({ knowledgeBase, onKnowledgeUpdated }: KnowledgeBa
     onKnowledgeUpdated(updatedKnowledge);
   };
 
+  const formatDate = (date: Date | string) => {
+    try {
+      const dateObj = typeof date === 'string' ? new Date(date) : date;
+      return dateObj.toLocaleDateString('pl-PL');
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return 'Nieznana data';
+    }
+  };
+
   return (
     <Card className="h-[600px] flex flex-col">
       <CardHeader>
@@ -104,7 +114,7 @@ const KnowledgeBaseManager = ({ knowledgeBase, onKnowledgeUpdated }: KnowledgeBa
                       {item.content.substring(0, 150)}...
                     </p>
                     <span className="text-xs text-gray-400 mt-2 block">
-                      Dodano: {item.dateAdded.toLocaleDateString('pl-PL')}
+                      Dodano: {formatDate(item.dateAdded)}
                     </span>
                   </div>
                   <Button
