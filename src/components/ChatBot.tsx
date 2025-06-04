@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ApiKeySetup from "./ApiKeySetup";
@@ -90,7 +89,9 @@ Użytkownik ma następujące statystyki weekendowe:
 
 Odpowiadaj w języku polskim, bądź pomocny i konkretny. Opieraj swoje odpowiedzi WYŁĄCZNIE na materiałach z bazy wiedzy.`;
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+    console.log('Wysyłam zapytanie do Gemini API...');
+    
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -110,11 +111,16 @@ Odpowiadaj w języku polskim, bądź pomocny i konkretny. Opieraj swoje odpowied
       }),
     });
 
+    console.log('Odpowiedź z Gemini API:', response.status, response.statusText);
+
     if (!response.ok) {
-      throw new Error('Błąd API Gemini');
+      const errorData = await response.json();
+      console.error('Szczegóły błędu Gemini API:', errorData);
+      throw new Error(`Błąd API Gemini: ${errorData.error?.message || 'Nieznany błąd'}`);
     }
 
     const data = await response.json();
+    console.log('Dane z Gemini API:', data);
     return data.candidates[0].content.parts[0].text;
   };
 
