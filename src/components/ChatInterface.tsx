@@ -45,25 +45,25 @@ const ChatInterface = ({
   };
 
   return (
-    <Card className="h-[800px] flex flex-col">
-      {/* Minimal Avatar Header */}
-      <div className="p-3 border-b bg-gradient-to-r from-blue-50 to-purple-50">
+    <Card className="h-[600px] flex flex-col">
+      {/* Ultra Minimal Avatar Header */}
+      <div className="p-2 border-b bg-gradient-to-r from-blue-50 to-purple-50">
         <div className="text-center">
-          <AnimatedAvatar isSpeaking={isTyping} className="mb-1 scale-50" />
-          <h3 className="text-base font-semibold text-gray-800">Asystent ManagerCoach</h3>
+          <AnimatedAvatar isSpeaking={isTyping} className="mb-0.5 scale-[0.3]" />
+          <h3 className="text-sm font-semibold text-gray-800">Asystent ManagerCoach</h3>
           <p className="text-xs text-gray-600">Odpowiadam na wszystkie pytania oraz korzystam z Twojej bazy wiedzy (Powered by Gemini AI)</p>
-          <div className="flex items-center justify-center gap-4 mt-1">
+          <div className="flex items-center justify-center gap-4 mt-0.5">
             <span className="inline-flex items-center text-xs text-green-600">
-              <div className="w-1 h-1 bg-green-500 rounded-full mr-1"></div>
+              <div className="w-0.5 h-0.5 bg-green-500 rounded-full mr-1"></div>
               Online
             </span>
             <Button
               variant="ghost"
               size="sm"
               onClick={onShowApiKeyInput}
-              className="text-xs h-6"
+              className="text-xs h-5"
             >
-              <Key className="h-2 w-2 mr-1" />
+              <Key className="h-1.5 w-1.5 mr-1" />
               Zmień API
             </Button>
           </div>
