@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ApiKeySetup from "./ApiKeySetup";
@@ -9,7 +10,7 @@ const ChatBot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      text: "Cześć! Jestem Twoim asystentem ManagerCoach. Mogę odpowiadać na pytania na podstawie materiałów, które zostały dodane do mojej bazy wiedzy. Jak mogę Ci pomóc?",
+      text: "Cześć! Jestem Twoim asystentem ManagerCoach. Mogę odpowiadać na wszystkie pytania oraz bazować na materiałach z bazy wiedzy. Jak mogę Ci dzisiaj pomóc?",
       isUser: false,
       timestamp: new Date()
     }
@@ -52,7 +53,7 @@ const ChatBot = () => {
 
   const findRelevantKnowledge = (query: string): string => {
     if (knowledgeBase.length === 0) {
-      return "Brak materiałów w bazie wiedzy.";
+      return "";
     }
 
     const queryLower = query.toLowerCase();
@@ -62,7 +63,7 @@ const ChatBot = () => {
     );
 
     if (relevantItems.length === 0) {
-      return "Nie znaleziono odpowiednich materiałów w bazie wiedzy.";
+      return "";
     }
 
     return relevantItems.map(item => `**${item.title}**\n${item.content}`).join('\n\n---\n\n');
@@ -97,10 +98,7 @@ Twoim priorytetem jest ułatwić użytkownikowi konstruktywne, spokojne i klarow
 
 Zawsze dąż do tego, by użytkownik poczuł się lepiej przygotowany do działania, bardziej pewny siebie i spokojniejszy.
 
-WAŻNE: Odpowiadaj TYLKO na podstawie materiałów z bazy wiedzy podanych poniżej. Jeśli informacji nie ma w materiałach, powiedz, że nie masz takiej informacji w bazie wiedzy, ale zaproponuj ogólne techniki coachingowe związane z zadanym pytaniem.
-
-MATERIAŁY Z BAZY WIEDZY:
-${relevantKnowledge}
+${relevantKnowledge ? `Poniżej znajdują się materiały z bazy wiedzy, które mogą być pomocne przy odpowiedzi na pytanie użytkownika. Możesz na nich bazować, jeśli uznasz, że są przydatne:\n\n${relevantKnowledge}\n\nJednakże nie bój się odpowiedzieć również na podstawie swojej wiedzy ogólnej, jeśli pytanie wykracza poza materiały z bazy wiedzy.` : 'Odpowiedz na podstawie swojej ogólnej wiedzy, gdyż nie znaleziono odpowiednich materiałów w bazie wiedzy.'}
 
 Użytkownik ma następujące statystyki weekendowe:
 - Dni korzystania w ostatnim weekendzie: ${weekendStats.daysUsed}

@@ -51,7 +51,7 @@ const ChatInterface = ({
         <div className="text-center">
           <AnimatedAvatar isSpeaking={isTyping} className="mb-4" />
           <h3 className="text-xl font-semibold text-gray-800">Asystent ManagerCoach</h3>
-          <p className="text-sm text-gray-600 mt-1">Odpowiadam na podstawie Twojej bazy wiedzy (Powered by Gemini AI)</p>
+          <p className="text-sm text-gray-600 mt-1">Odpowiadam na wszystkie pytania oraz korzystam z Twojej bazy wiedzy (Powered by Gemini AI)</p>
           <div className="flex items-center justify-center gap-4 mt-2">
             <span className="inline-flex items-center text-sm text-green-600">
               <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
@@ -135,7 +135,7 @@ const ChatInterface = ({
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Zapytaj o materiały z bazy wiedzy..."
+            placeholder="Zapytaj o cokolwiek..."
             className="flex-1"
           />
           <Button onClick={handleSendMessage} disabled={!inputValue.trim()}>
