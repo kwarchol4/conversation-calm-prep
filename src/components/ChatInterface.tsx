@@ -45,7 +45,7 @@ const ChatInterface = ({
   };
 
   return (
-    <Card className="h-[600px] flex flex-col">
+    <Card className="h-[450px] flex flex-col">
       {/* Compact Header with Avatar on Left */}
       <div className="p-3 border-b bg-gradient-to-r from-blue-50 to-purple-50">
         <div className="flex items-center gap-3">
