@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Send, Bot, User, Key } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -47,12 +46,12 @@ const ChatInterface = ({
   return (
     <Card className="h-[600px] flex flex-col">
       {/* Compact Header with Avatar on Left */}
-      <div className="px-3 py-1.5 border-b bg-gradient-to-r from-blue-50 to-purple-50">
+      <div className="px-3 py-1 border-b bg-gradient-to-r from-blue-50 to-purple-50">
         <div className="flex items-center gap-2">
-          <AnimatedAvatar isSpeaking={isTyping} className="scale-[0.25]" />
+          <AnimatedAvatar isSpeaking={isTyping} className="scale-[0.2]" />
           <div className="flex-1">
-            <h3 className="text-sm font-semibold text-gray-800 leading-tight">Asystent ManagerCoach</h3>
-            <p className="text-xs text-gray-600 leading-tight">Odpowiadam na wszystkie pytania oraz korzystam z Twojej bazy wiedzy (Powered by Gemini AI)</p>
+            <h3 className="text-sm font-semibold text-gray-800 leading-none">Asystent ManagerCoach</h3>
+            <p className="text-xs text-gray-600 leading-none">Odpowiadam na wszystkie pytania oraz korzystam z Twojej bazy wiedzy (Powered by Gemini AI)</p>
           </div>
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center text-xs text-green-600">
