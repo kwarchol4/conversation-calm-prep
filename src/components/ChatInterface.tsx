@@ -46,9 +46,9 @@ const ChatInterface = ({
   return (
     <Card className="h-[600px] flex flex-col">
       {/* Compact Header with Avatar on Left */}
-      <div className="px-3 py-1 border-b bg-gradient-to-r from-blue-50 to-purple-50">
+      <div className="px-3 py-0.5 border-b bg-gradient-to-r from-blue-50 to-purple-50">
         <div className="flex items-center gap-2">
-          <AnimatedAvatar isSpeaking={isTyping} className="scale-[0.2]" />
+          <AnimatedAvatar isSpeaking={isTyping} className="scale-[0.15]" />
           <div className="flex-1">
             <h3 className="text-sm font-semibold text-gray-800 leading-none">Asystent ManagerCoach</h3>
             <p className="text-xs text-gray-600 leading-none">Odpowiadam na wszystkie pytania oraz korzystam z Twojej bazy wiedzy (Powered by Gemini AI)</p>
