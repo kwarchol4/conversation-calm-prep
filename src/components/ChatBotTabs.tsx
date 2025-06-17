@@ -24,7 +24,7 @@ const ChatBotTabs = ({
     <Tabs defaultValue="chat" className="w-full">
       <TabsList className="grid w-full grid-cols-2 mb-4">
         <TabsTrigger value="chat">Chat</TabsTrigger>
-        <TabsTrigger value="knowledge">Baza Wiedzy ({knowledgeBase.length})</TabsTrigger>
+        <TabsTrigger value="knowledge">Baza Wiedzy</TabsTrigger>
       </TabsList>
       
       <TabsContent value="chat">
