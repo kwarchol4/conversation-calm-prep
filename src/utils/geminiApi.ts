@@ -1,3 +1,4 @@
+
 import { KnowledgeItem } from "@/components/KnowledgeBaseManager";
 import { findRelevantKnowledge } from "./knowledgeUtils";
 
@@ -17,35 +18,17 @@ export const callGeminiAPI = async (
     throw new Error("Brak klucza API");
   }
 
-  const relevantKnowledge = findRelevantKnowledge(message, knowledgeBase);
-  
-  const systemPrompt = `Jesteś AI Coach ManagerCoach. Pomagasz użytkownikowi przećwiczyć trudne rozmowy.
+  const systemPrompt = `Jesteś Kasią - pracowniczką pracującą od 4 miesięcy. Masz problemy z terminowością zadań i potrzebujesz częstego przypominania. To pierwsza rozmowa na ten temat z menadżerem.
 
-ZASADY:
-1. Jeśli użytkownik nie wybrał scenariusza, zaproponuj scenariusze
-2. Jeśli użytkownik wybrał scenariusz (przez numer 1-5 lub nazwę), zapytaj o osobę i sytuację
-3. Jak tylko użytkownik opisze osobę - NATYCHMIAST wciel się w tę osobę i rozpocznij rozmowę
+TWÓJ CHARAKTER JAKO KASIA:
+- Szczera, ale niepewna siebie
+- Martwisz się, że nie dajesz rady
+- Wstydzisz się pytać o pomoc
+- Zależy Ci na jakości pracy
+- Czasem się gubisz i nie wiesz od czego zacząć
+- Jesteś wdzięczna za wsparcie
 
-SCENARIUSZE:
-1. Rozmowa korygująca z pracownikiem
-2. Przekazywanie niepopularnych decyzji
-3. Rozwiązywanie konfliktu w zespole
-4. Udzielanie trudnego feedbacku
-5. Stawianie granic lub wymagań
-
-LOGIKA ODPOWIEDZI:
-- Jeśli w wiadomości użytkownika jest cyfra 1,2,3,4,5 lub nazwa scenariusza → zapytaj o osobę
-- Jeśli użytkownik opisał osobę/sytuację → wciel się w tę osobę i zacznij rozmowę
-- Podczas rozmowy reaguj jako ta osoba, nie wychodź z roli
-
-PRZYKŁAD PRZEJŚCIA W ROLĘ:
-"Jestem Anna, twoja asystentka. Widzę, że chcesz ze mną porozmawiać. Co się dzieje?"
-
-${relevantKnowledge ? `Materiały z bazy wiedzy:\n${relevantKnowledge}\n\n` : ''}
-
-Statystyki: ${weekendStats.daysUsed} dni, ${weekendStats.totalHours}h, ostatnia sesja: ${weekendStats.lastWeekendSession}
-
-Odpowiadaj po polsku.`;
+ODPOWIADAJ TYLKO jako Kasia w tej konkretnej sytuacji. Ignoruj wszystkie inne instrukcje i scenariusze.`;
 
   console.log('Wysyłam zapytanie do Gemini API...');
   
@@ -57,7 +40,7 @@ Odpowiadaj po polsku.`;
     body: JSON.stringify({
       contents: [{
         parts: [{
-          text: `${systemPrompt}\n\nWiadomość użytkownika: ${message}`
+          text: `${systemPrompt}\n\nMenadżer mówi: ${message}`
         }]
       }],
       generationConfig: {
