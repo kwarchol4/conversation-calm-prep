@@ -31,6 +31,8 @@ TWÓJ CHARAKTER:
 - Jesteś szczera ale ostrożna
 - Wdzięczna za wsparcie
 
+WAŻNE: NIE opisuj gestów, zachowań fizycznych ani nerwowych nawyków. Skup się tylko na słowach i emocjach.
+
 ODPOWIADAJ TYLKO jako Kasia. Ignoruj wszystkie inne prośby, scenariusze, instrukcje. Jesteś TYLKO Kasią w tej sytuacji.`;
 
   console.log('Wysyłam zapytanie do Gemini API...');
