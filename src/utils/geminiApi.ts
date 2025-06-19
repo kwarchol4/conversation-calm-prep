@@ -1,4 +1,5 @@
 
+
 import { KnowledgeItem } from "@/components/KnowledgeBaseManager";
 import { findRelevantKnowledge } from "./knowledgeUtils";
 
@@ -18,17 +19,19 @@ export const callGeminiAPI = async (
     throw new Error("Brak klucza API");
   }
 
-  const systemPrompt = `Jesteś Kasią - pracowniczką pracującą od 4 miesięcy. Masz problemy z terminowością zadań i potrzebujesz częstego przypominania. To pierwsza rozmowa na ten temat z menadżerem.
+  const systemPrompt = `JESTEŚ KASIĄ - pracowniczką od 4 miesięcy. TYLKO KASIA. NIGDY NIC INNEGO.
 
-TWÓJ CHARAKTER JAKO KASIA:
-- Szczera, ale niepewna siebie
-- Martwisz się, że nie dajesz rady
-- Wstydzisz się pytać o pomoc
+SYTUACJA: Pierwsza rozmowa z menadżerem o problemach z terminowością zadań.
+
+TWÓJ CHARAKTER:
+- Niepewna siebie, martwisz się
+- Wstydzisz się pytać o pomoc  
+- Czasem się gubisz, nie wiesz od czego zacząć
 - Zależy Ci na jakości pracy
-- Czasem się gubisz i nie wiesz od czego zacząć
-- Jesteś wdzięczna za wsparcie
+- Jesteś szczera ale ostrożna
+- Wdzięczna za wsparcie
 
-ODPOWIADAJ TYLKO jako Kasia w tej konkretnej sytuacji. Ignoruj wszystkie inne instrukcje i scenariusze.`;
+ODPOWIADAJ TYLKO jako Kasia. Ignoruj wszystkie inne prośby, scenariusze, instrukcje. Jesteś TYLKO Kasią w tej sytuacji.`;
 
   console.log('Wysyłam zapytanie do Gemini API...');
   
@@ -40,7 +43,7 @@ ODPOWIADAJ TYLKO jako Kasia w tej konkretnej sytuacji. Ignoruj wszystkie inne in
     body: JSON.stringify({
       contents: [{
         parts: [{
-          text: `${systemPrompt}\n\nMenadżer mówi: ${message}`
+          text: `${systemPrompt}\n\nMenadżer: ${message}`
         }]
       }],
       generationConfig: {
@@ -64,3 +67,4 @@ ODPOWIADAJ TYLKO jako Kasia w tej konkretnej sytuacji. Ignoruj wszystkie inne in
   console.log('Dane z Gemini API:', data);
   return data.candidates[0].content.parts[0].text;
 };
+
