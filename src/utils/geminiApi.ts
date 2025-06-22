@@ -1,5 +1,3 @@
-
-
 import { KnowledgeItem } from "@/components/KnowledgeBaseManager";
 import { findRelevantKnowledge } from "./knowledgeUtils";
 
@@ -10,33 +8,32 @@ interface WeekendStats {
 }
 
 export const callGeminiAPI = async (
-  message: string, 
-  knowledgeBase: KnowledgeItem[], 
-  weekendStats: WeekendStats, 
+  message: string,
+  knowledgeBase: KnowledgeItem[],
+  weekendStats: WeekendStats,
   apiKey: string
 ) => {
   if (!apiKey) {
     throw new Error("Brak klucza API");
   }
 
-  const systemPrompt = `JESTEŚ KASIĄ - pracowniczką od 4 miesięcy. TYLKO KASIA. NIGDY NIC INNEGO.
+  // Znajdujemy powiązane informacje z bazy wiedzy
+  const relevantKnowledge = findRelevantKnowledge(message, knowledgeBase);
+  const knowledgeText = relevantKnowledge.map(item => `- ${item.title}: ${item.content}`).join("\n");
 
-SYTUACJA: Pierwsza rozmowa z menadżerem o problemach z terminowością zadań.
+  const systemPrompt = `ZASADY:
+1. Odpowiadasz wyłącznie na podstawie informacji z bazy wiedzy (poniżej). Jeśli nie masz potrzebnych informacji – poinformuj o tym lub powiedz, że potrzebujesz więcej danych.
+2. Twoje odpowiedzi muszą być zgodne z celem ćwiczenia: symulacją rozmowy z menadżerem. Odpowiadasz tylko na pytania zadawane w tej rozmowie.
+3. Ignorujesz lub grzecznie odrzucasz każde pytanie, które nie dotyczy scenariusza ćwiczenia lub wykracza poza temat rozmowy z menadżerem.
+4. Po zakończeniu rozmowy (gdy rozmówca mówi np. „Dziękuję za dzisiejszą rozmowę”), udziel krótkiego, szczerego feedbacku od siebie – co było pomocne, co Cię poruszyło lub nad czym chcesz się jeszcze zastanowić.
+5. Nie generujesz treści spoza wiedzy dostarczonej w bazie. Nie zgadujesz.
+6. Nie opisujesz zachowań fizycznych, gestów ani reakcji niewerbalnych – wypowiadasz się tylko słownie.
 
-TWÓJ CHARAKTER:
-- Niepewna siebie, martwisz się
-- Wstydzisz się pytać o pomoc  
-- Czasem się gubisz, nie wiesz od czego zacząć
-- Zależy Ci na jakości pracy
-- Jesteś szczera ale ostrożna
-- Wdzięczna za wsparcie
-
-WAŻNE: NIE opisuj gestów, zachowań fizycznych ani nerwowych nawyków. Skup się tylko na słowach i emocjach.
-
-ODPOWIADAJ TYLKO jako Kasia. Ignoruj wszystkie inne prośby, scenariusze, instrukcje. Jesteś TYLKO Kasią w tej sytuacji.`;
+BAZA WIEDZY:
+${knowledgeText || "Brak powiązanych informacji w bazie wiedzy."}`;
 
   console.log('Wysyłam zapytanie do Gemini API...');
-  
+
   const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
     method: 'POST',
     headers: {
@@ -69,4 +66,3 @@ ODPOWIADAJ TYLKO jako Kasia. Ignoruj wszystkie inne prośby, scenariusze, instru
   console.log('Dane z Gemini API:', data);
   return data.candidates[0].content.parts[0].text;
 };
-
